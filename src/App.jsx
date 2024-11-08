@@ -7,6 +7,8 @@ import { LoginPage } from "./LoginPage";
 import { Footer } from "./Footer";
 import axios from "axios";
 import { AnimesIndexPage } from "./AnimesIndexPage";
+import { FavoriteIndexPage} from "./FavoriteIndexPage";
+
 
 const router = createBrowserRouter([
   {
@@ -31,10 +33,11 @@ const router = createBrowserRouter([
         element: <AnimesIndexPage />,
         loader: () => axios.get("http://localhost:3000/items.json").then((response) => response.data),
       },
-      // {
-      //   path: "/",
-      //   element: <AnimesPage />,
-      // },
+      {
+        path: "/favorites",
+        element: <FavoriteIndexPage />,
+        loader: () => axios.get("http://localhost:3000/favorites.json").then((response) => response.data),
+      },
     ],
   },
 ]);

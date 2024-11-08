@@ -30,7 +30,7 @@ export function Header() {
   } else {
     authenticationLinks = (
       <>
-      <LogoutLink />
+      <Link to="/Favorites">Favorites</Link> | <LogoutLink />
       </>
    )
    user = <>Welcome, {currentUser.name}!.</>
