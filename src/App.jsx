@@ -3,8 +3,10 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { SignupPage } from "./SignupPage";
 import { LoginPage } from "./LoginPage";
-import { AnimesPage } from "./AnimesPage";
+// import { AnimesPage } from "./AnimesPage";
 import { Footer } from "./Footer";
+import axios from "axios";
+import { AnimesIndexPage } from "./AnimesIndexPage";
 
 const router = createBrowserRouter([
   {
@@ -17,10 +19,6 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/",
-        element: <AnimesPage />,
-      },
-      {
         path: "/signup",
         element: <SignupPage />,
       },
@@ -28,6 +26,15 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginPage />,
       },
+      {
+        path: "/",
+        element: <AnimesIndexPage />,
+        loader: () => axios.get("http://localhost:3000/items.json").then((response) => response.data),
+      },
+      // {
+      //   path: "/",
+      //   element: <AnimesPage />,
+      // },
     ],
   },
 ]);

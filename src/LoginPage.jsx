@@ -13,6 +13,7 @@ export function LoginPage() {
     event.preventDefault();
     setErrors([]);
     const params = new FormData(event.target);
+    console.log("handleSubmit");
     axios
       .post("http://localhost:3000/sessions.json", params)
       .then((response) => {
