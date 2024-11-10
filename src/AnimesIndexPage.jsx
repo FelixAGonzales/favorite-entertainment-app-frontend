@@ -1,21 +1,21 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { Modal } from "./Modal";
-import { FavoriteShow } from "./FavoriteShow";
+import { AnimeShow } from "./AnimeShow";
 
 export function AnimesIndexPage() {
   const animes = useLoaderData();
   const [searchFilter, setSearchFilter] = useState("");
-  const [currentFavorite, setCurrentFavorite] = useState({});
-  const [isFavoriteShowVisible, setIsFavoriteShowVisible] = useState(false);
+  const [currentAnime, setCurrentAnime] = useState({});
+  const [isAnimeShowVisible, setIsAnimeShowVisible] = useState(false);
 
   const handleShow = (anime) => {
-      setIsFavoriteShowVisible(true);
-      setCurrentFavorite(anime);
+      setIsAnimeShowVisible(true);
+      setCurrentAnime(anime);
     };
     
     const handleClose = () => {
-      setIsFavoriteShowVisible(false);
+      setIsAnimeShowVisible(false);
     };
 
 
@@ -36,8 +36,8 @@ export function AnimesIndexPage() {
       </div> 
 
 
-      <Modal show={isFavoriteShowVisible} onClose={handleClose}>
-        <FavoriteShow currentFavorite={currentFavorite}/>
+      <Modal show={isAnimeShowVisible} onClose={handleClose}>
+        <AnimeShow currentAnime={currentAnime}/>
       </Modal>
     </div>
   );

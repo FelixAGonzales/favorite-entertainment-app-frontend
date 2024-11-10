@@ -1,10 +1,12 @@
 export function FavoriteShow({ currentFavorite }) {
   return (
     <div>
-      <h1>{currentFavorite.name}</h1>
-      <img src={currentFavorite.image_url} alt={currentFavorite.name} />
-      <p>{currentFavorite.description}</p>
-      <p>Category: {currentFavorite.category}</p>
+      <div>
+        <h1>{currentFavorite.item.name}</h1>
+        <img src={currentFavorite.item.image_url} alt={currentFavorite.name} />
+        <p>{currentFavorite.item.description}</p>
+        <p>Category: {currentFavorite.item.category}</p>
+      </div>
     </div>
   );
 }
