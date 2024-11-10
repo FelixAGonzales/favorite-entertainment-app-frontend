@@ -8,6 +8,7 @@ import { Footer } from "./Footer";
 import axios from "axios";
 import { AnimesIndexPage } from "./AnimesIndexPage";
 import { FavoriteIndexPage} from "./FavoriteIndexPage";
+import { AnimessNewPage } from "./AnimeNewPage";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/new",
+        element: <AnimessNewPage />,
       },
       {
         path: "/",
