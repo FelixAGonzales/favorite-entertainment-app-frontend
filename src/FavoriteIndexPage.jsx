@@ -38,12 +38,13 @@ export function FavoriteIndexPage() {
 
   return (
     <div>
-      <h1>My Favorite Anime List</h1>
-      <input type="text" value={searchFilter} onChange={(event) => setSearchFilter(event.target.value)}/>
+      <div className="centered-content">
+        <h1>My Favorite Anime List</h1>
+        <input type="text" value={searchFilter} onChange={(event) => setSearchFilter(event.target.value)}/>
+      </div>
       <div className="posts-container">
-
       {animes.filter((favorite) => favorite.item.name.toLowerCase().includes(searchFilter.toLowerCase())).map(favorite => (
-        <div key={favorite.id}>
+        <div key={favorite.id} className="favorites">
           <h2>{favorite.item.name}</h2>
           <img src={favorite.item.image_url} alt="" />
           <p> {favorite.item.description}</p>

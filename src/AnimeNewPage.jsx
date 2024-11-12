@@ -34,8 +34,8 @@ export function AnimessNewPage() {
         </div>
         <br />
         <div>
-          <label htmlFor="catergory">Category:</label>
-          <input type="text" id="catergory" name="catergory" />
+          <label htmlFor="category">Category:</label>
+          <input type="text" id="category" name="category" />
         </div>
         <br />
         <button type="submit">Submit</button>

@@ -33,7 +33,7 @@ export function Header() {
       <Link to="/Favorites">Favorites</Link> | <LogoutLink />
       </>
    )
-   user = <>Welcome, {currentUser.name}!.</>
+   user = <> Welcome, {currentUser.name}!</>
     // console.log("I am logged in")
   }
 
@@ -43,7 +43,7 @@ export function Header() {
   return (
     <header>
       <nav>
-      <Link to="/">Home</Link> | {authenticationLinks} | {user}
+      <Link to="/">Home</Link> | {authenticationLinks} |  {user}
       </nav>
     </header>
   )

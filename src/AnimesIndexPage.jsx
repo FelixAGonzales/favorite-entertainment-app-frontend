@@ -21,8 +21,10 @@ export function AnimesIndexPage() {
 
   return (
     <div>
-      <h1>Anime List</h1>
-      <input type="text" value={searchFilter} onChange={(event) => setSearchFilter(event.target.value)}/>
+      <div className="centered-content">
+        <h1>Anime List</h1>
+        <input type="text" value={searchFilter} onChange={(event) => setSearchFilter(event.target.value)}/>
+      </div>
       <div className="posts-container">
       {animes.filter((animes) => animes.name.toLowerCase().includes(searchFilter.toLowerCase())).map(animes => (
         <div key={animes.id} className="animes">
