@@ -47,7 +47,7 @@ export function FavoriteIndexPage() {
         <div key={favorite.id} className="favorites">
           <h2>{favorite.item.name}</h2>
           <img src={favorite.item.image_url} alt="" />
-          <p> {favorite.item.description}</p>
+          {/* <p> {favorite.item.description}</p> */}
           <p>Category: {favorite.item.category}</p>
           <button type="button" onClick={() => handleShow(favorite)}> More Info </button>
           <br />

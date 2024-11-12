@@ -127,3 +127,42 @@ input[type="text"] {
   align-items: center;
   text-align: center;
 }
+
+
+.anime-show-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.anime-details {
+  display: flex;
+  gap: 1.5rem; 
+  align-items: center;
+  max-width: 80%; 
+  margin: 1rem auto;
+}
+
+.anime-image {
+  width: 200px; 
+  border-radius: 4px;
+  align-self: center;
+}
+
+.anime-description {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.anime-description h1 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.anime-description p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}

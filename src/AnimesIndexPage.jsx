@@ -30,7 +30,7 @@ export function AnimesIndexPage() {
         <div key={animes.id} className="animes">
           <h2>{animes.name}</h2>
           <img src={animes.image_url} alt="" />
-          <p> {animes.description}</p>
+          {/* <p> {animes.description}</p> */}
           <p>Category: {animes.category}</p>
           <button type="button" onClick={() => handleShow(animes)}> More Info </button>
         </div>
