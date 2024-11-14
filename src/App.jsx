@@ -9,6 +9,8 @@ import axios from "axios";
 import { AnimesIndexPage } from "./AnimesIndexPage";
 import { FavoriteIndexPage} from "./FavoriteIndexPage";
 import { AnimessNewPage } from "./AnimeNewPage";
+import { ProfilePage } from "./ProfilePage";
+import { TopAnimePage } from "./TopAnimePage";
 
 
 const router = createBrowserRouter([
@@ -42,6 +44,15 @@ const router = createBrowserRouter([
         path: "/favorites",
         element: <FavoriteIndexPage />,
         loader: () => axios.get("http://localhost:3000/favorites.json").then((response) => response.data),
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+        loader: () => axios.get("http://localhost:3000/favorites.json").then((response) => response.data),
+      },
+      {
+        path: "/topanime",
+        element: <TopAnimePage />,
       },
     ],
   },
