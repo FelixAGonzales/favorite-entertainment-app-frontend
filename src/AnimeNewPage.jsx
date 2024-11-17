@@ -5,11 +5,9 @@ export function AnimessNewPage() {
   
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log('handling submit')
     const params = new FormData(event.target)
     axios.post("http://localhost:3000/items.json", params).then(response => {
       console.log(response.data)
-      // window.location.href = "/"
       navigate('/');
       
     })
