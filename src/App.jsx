@@ -1,17 +1,15 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-
 import { Header } from "./Header";
 import { SignupPage } from "./SignupPage";
 import { LoginPage } from "./LoginPage";
-// import { AnimesPage } from "./AnimesPage";
 import { Footer } from "./Footer";
 import axios from "axios";
 import { AnimesIndexPage } from "./AnimesIndexPage";
-import { FavoriteIndexPage} from "./FavoriteIndexPage";
+import { FavoriteIndexPage } from "./FavoriteIndexPage";
 import { AnimessNewPage } from "./AnimeNewPage";
 import { ProfilePage } from "./ProfilePage";
 import { TopAnimePage } from "./TopAnimePage";
-
+import { FullAnimePageShow } from "./FullAnimePageShow";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +51,13 @@ const router = createBrowserRouter([
       {
         path: "/topanime",
         element: <TopAnimePage />,
+      },
+      {
+        path: "/anime/:id",
+        element: <FullAnimePageShow />,
+        loader: ({ params }) =>
+          axios.get(`https://thingproxy.freeboard.io/fetch/https://api.jikan.moe/v4/anime/${params.id}`)
+               .then(response => response.data.data)
       },
     ],
   },

@@ -1,93 +1,149 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-// import axios from "axios";
 import { Modal } from "./Modal";
 import { FavoriteShow } from "./FavoriteShow";
 
 export function TopAnimePage() {
-  const initialFavorites = useLoaderData();
-  const [searchFilter, setSearchFilter] = useState("");
-  const [animes, setAnimes] = useState(initialFavorites || []);
-  const [currentFavorite, setCurrentFavorite] = useState({});
-  const [isFavoriteShowVisible, setIsFavoriteShowVisible] = useState(false);
+    const initialFavorites = useLoaderData();
+    const [searchFilter, setSearchFilter] = useState("");
+    const [animes, setAnimes] = useState(initialFavorites || []);
+    const [currentFavorite] = useState({});
+    const [isFavoriteShowVisible, setIsFavoriteShowVisible] = useState(false);
+    const [pagination, setPagination] = useState({ currentPage: 1, lastPage: 1 });
+    const navigate = useNavigate();
 
-  // Fetch top anime with query parameters for filtering
-  const fetchFavorites = async () => {
-    const baseUrl = "https://thingproxy.freeboard.io/fetch/https://api.jikan.moe/v4/top/anime";
-    const params = {
-        type: "tv",            // Specify type if needed: "tv", "movie", etc.
-        filter: "bypopularity", // Options: "airing", "upcoming", "bypopularity", "favorite"
-        rating: "pg13",         // Audience ratings: "g", "pg", "pg13", "r17", "r", "rx"
-        sfw: true,              // true to filter out adult entries
-        page: 1,                // Page number for pagination
-        limit: 20               // Limit number of results per page
+    const fetchFavorites = async () => {
+        const baseUrl = "https://thingproxy.freeboard.io/fetch/https://api.jikan.moe/v4/top/anime";
+        const params = {
+            type: "",
+            filter: "",
+            rating: "",
+            sfw: false,
+            page: pagination.currentPage,
+            limit: 20,
+        };
+        const queryParams = new URLSearchParams(params).toString();
+
+        try {
+            const response = await fetch(`${baseUrl}?${queryParams}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+            setAnimes(data.data);
+            setPagination({
+                lastPage: data.pagination.last_visible_page,
+                currentPage: data.pagination.current_page,
+            });
+        } catch (error) {
+            console.error("Error fetching top anime:", error);
+        }
     };
 
-    // Convert params object to a query string
-    const queryParams = new URLSearchParams(params).toString();
+    const handleShow = (animeId) => navigate(`/anime/${animeId}`);
 
-    try {
-        const response = await fetch(`${baseUrl}?${queryParams}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Data received:", data);
-        setAnimes(data.data);
-    } catch (error) {
-        console.error("Error fetching top anime:", error);
-    }
-};
+    const handleClose = () => setIsFavoriteShowVisible(false);
 
-  // Show the selected favorite anime details
-  const handleShow = (favorite) => {
-    setIsFavoriteShowVisible(true);
-    setCurrentFavorite(favorite);
-  };
+    useEffect(() => {
+        fetchFavorites();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pagination.currentPage]);
 
-  // Close the modal
-  const handleClose = () => {
-    setIsFavoriteShowVisible(false);
-  };
+    const handlePageClick = (page) => setPagination((prev) => ({ ...prev, currentPage: page }));
 
-  // Fetch anime data when component mounts
-  useEffect(() => {
-    fetchFavorites();
-  }, []);
+    const startPage = Math.max(1, pagination.currentPage - 2);
+    const endPage = Math.min(startPage + 4, pagination.lastPage);
+    const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
-  return (
-    <div>
-      <div className="centered-content">
-        <h1>Top Anime List</h1>
-        <input
-          type="text"
-          placeholder="Search Anime"
-          value={searchFilter}
-          onChange={(event) => setSearchFilter(event.target.value)}
-        />
-      </div>
-      <div className="posts-container">
-        {animes
-          .filter((anime) =>
-            anime.title.toLowerCase().includes(searchFilter.toLowerCase())
-          )
-          .map((anime) => (
-            <div key={anime.mal_id} className="favorites">
-              <h2>{anime.title}</h2>
-              <img src={anime.images.jpg.image_url} alt={anime.title} />
-              <p>Rank: {anime.rank}</p>
-              <p>Score: {anime.score}</p>
-              <button type="button" onClick={() => handleShow(anime)}>
-                More Info
-              </button>
+    return (
+        <div>
+            <div className="centered-content">
+                <h1>Top Anime List</h1>
+                <input
+                    type="text"
+                    placeholder="Search Anime"
+                    value={searchFilter}
+                    onChange={(event) => setSearchFilter(event.target.value)}
+                />
             </div>
-          ))}
-      </div>
 
-      {/* Modal to show more details of the selected anime */}
-      <Modal show={isFavoriteShowVisible} onClose={handleClose}>
-        <FavoriteShow currentFavorite={currentFavorite} />
-      </Modal>
-    </div>
-  );
+            <div className="anime-list-header">
+                <div>Rank</div>
+                <div>Title</div>
+                <div>Score ⭐</div>
+                <div>Aired</div>
+                <div>Status</div>
+            </div>
+
+            <div className="anime-list">
+                {animes
+                    .filter((anime) =>
+                        anime.title.toLowerCase().includes(searchFilter.toLowerCase())
+                    )
+                    .sort((a, b) => a.rank - b.rank)
+                    .map((anime) => (
+                        <div key={anime.mal_id} className="anime-row">
+                            <div className="anime-rank">{anime.rank}</div>
+                            <div className="anime-title">
+                                <img
+                                    src={anime.images.jpg.image_url}
+                                    alt={anime.title}
+                                    className="anime-image"
+                                />
+                                <div>
+                                    <h2>{anime.title}</h2>
+                                    <p>TV ({anime.episodes || "?"} eps)</p>
+                                    <p>{anime.aired.from?.slice(0, 4)}</p>
+                                    <p>{anime.members} members</p>
+                                </div>
+                            </div>
+                            <div className="anime-score">{anime.score} ⭐</div>
+                            <div className="anime-status">{anime.status}</div>
+                            <button type="button" onClick={() => handleShow(anime.mal_id)}>
+                                More Info
+                            </button>
+                        </div>
+                    ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="pagination">
+                <p>Current Page: {pagination.currentPage}</p>
+                <button onClick={() => handlePageClick(1)} disabled={pagination.currentPage === 1}>
+                    First
+                </button>
+                <button
+                    onClick={() => handlePageClick(pagination.currentPage - 1)}
+                    disabled={pagination.currentPage === 1}
+                >
+                    Previous
+                </button>
+
+                {pageNumbers.map((page) => (
+                    <button
+                        key={page}
+                        onClick={() => handlePageClick(page)}
+                        className={pagination.currentPage === page ? "active" : ""}
+                    >
+                        {page}
+                    </button>
+                ))}
+
+                <button
+                    onClick={() => handlePageClick(pagination.currentPage + 1)}
+                    disabled={pagination.currentPage === pagination.lastPage}
+                >
+                    Next
+                </button>
+                <button
+                    onClick={() => handlePageClick(pagination.lastPage)}
+                    disabled={pagination.currentPage === pagination.lastPage}
+                >
+                    Last
+                </button>
+            </div>
+
+            <Modal show={isFavoriteShowVisible} onClose={handleClose}>
+                <FavoriteShow currentFavorite={currentFavorite} />
+            </Modal>
+        </div>
+    );
 }
